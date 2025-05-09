@@ -4,6 +4,9 @@ This is the backend API for **WagerXPlay**, a **cricket sport betting simulation
 
 > ⚠️ **Disclaimer**: This project is for **educational and skill-building purposes only**. It is not intended for real-money gambling or commercial use.
 
+
+check here a how this website looks :
+🔗 **Live Site:** [https://wagerxplay.onrender.com](https://wagerxplay.onrender.com)
 ---
 
 ## 🔧 Core Features
