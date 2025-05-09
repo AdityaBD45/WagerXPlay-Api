@@ -83,7 +83,7 @@ check here a how this website looks :
 
 ---
 
-## 📁 Folder Structure
+## 📁 Folder Structure  (pls view this folder to correctly see structure)
 
 backend/
 ├── controllers/ # Business logic for each feature
