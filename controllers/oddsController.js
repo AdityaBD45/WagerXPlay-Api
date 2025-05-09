@@ -14,14 +14,14 @@ const getMatchOdds = async (req, res) => {
       const timeDiffInHours = (currentUTC - lastFetched) / (1000 * 60 * 60);
 
       if (timeDiffInHours < 4) {
-        console.log(`Using cached data. Last fetched ${timeDiffInHours.toFixed(2)} hours ago.`);
+        //console.log(`Using cached data. Last fetched ${timeDiffInHours.toFixed(2)} hours ago.`);
         const cachedData = await Odds.find({});
         return res.status(200).json(cachedData); // Return cached data if it was fetched recently
       }
     }
 
     // Fetch from Odds API
-    console.log("Fetching match odds from the API...");
+    //console.log("Fetching match odds from the API...");
     const response = await axios.get("https://api.the-odds-api.com/v4/sports/cricket/odds", {
       params: {
         apiKey: process.env.ODDS_API_KEY,
@@ -31,8 +31,8 @@ const getMatchOdds = async (req, res) => {
       },
     });
 
-    console.log("Current UTC time:", currentUTC);
-    console.log("API Response Data:", response.data);  // Log the entire API response for inspection
+    //console.log("Current UTC time:", currentUTC);
+    //console.log("API Response Data:", response.data);  // Log the entire API response for inspection
 
     // Process the fetched data and ensure no missing odds or teams
     const allMatches = response.data
@@ -62,7 +62,7 @@ const getMatchOdds = async (req, res) => {
         }));
 
         if (teams.length === 0 || !teams[0].odds) {
-          console.log(`Skipping match with missing odds: ${match.id}`);
+          //console.log(`Skipping match with missing odds: ${match.id}`);
           return null;  // Skip matches that have no odds data
         }
 
@@ -74,7 +74,7 @@ const getMatchOdds = async (req, res) => {
       })
       .filter((match) => match !== null);  // Filter out any null entries (incomplete matches)
 
-    console.log(`Fetched ${allMatches.length} valid cricket matches from the API`);
+    //console.log(`Fetched ${allMatches.length} valid cricket matches from the API`);
 
     // Save the fetched match odds to the database
     for (const match of allMatches) {
@@ -106,13 +106,13 @@ const getMatchOdds = async (req, res) => {
       if (timeDiffInHours > 4 && odds.matchStatus !== "completed") {
         odds.matchStatus = "completed";
         await odds.save();
-        console.log(`Updated match ID: ${odds.matchId} status to completed`);
+        //console.log(`Updated match ID: ${odds.matchId} status to completed`);
       }
     }
 
     // Send all stored odds as the response
     const storedOdds = await Odds.find({});
-    console.log("Fetched cricket matches from database:", storedOdds.length);
+    //console.log("Fetched cricket matches from database:", storedOdds.length);
 
     res.status(200).json(storedOdds); // Return stored odds after processing
 

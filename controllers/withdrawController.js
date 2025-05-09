@@ -8,7 +8,7 @@ const uploadImageToCloudinary = require('../services/uploadToCloudinary');
 exports.createWithdrawRequest = async (req, res) => {
   try {
     const { amount, screenshotBase64 } = req.body; // FIXED: expects screenshotBase64 now
-    console.log(req.body);
+    //console.log(req.body);
 
     if (!amount || !screenshotBase64) {
       return res.status(400).json({ message: 'Amount and screenshot are required' });

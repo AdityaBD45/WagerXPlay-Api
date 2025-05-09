@@ -7,7 +7,7 @@ const uploadImageToCloudinary = require('../services/uploadToCloudinary');
 exports.createDepositRequest = async (req, res) => {
   try {
     const { amount, screenshotBase64 } = req.body;
-    console.log(req.body); // Log the incoming request body
+    //console.log(req.body); // Log the incoming request body
     if (!amount || !screenshotBase64) {
       return res.status(400).json({ message: 'Amount and screenshot are required' });
     }

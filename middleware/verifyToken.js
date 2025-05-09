@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
   try {
     // Verify and decode the token
     const decoded = jwt.verify(token, JWT_SECRET);
-    console.log("Token verified, decoded user:", decoded);
+    //console.log("Token verified, decoded user:", decoded);
 
     // Attach the decoded payload to the request object
     req.user = decoded;
