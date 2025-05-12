@@ -32,7 +32,6 @@ mongoose.connect(process.env.MONGO_URI || 'your-fallback-URI', {
 // ✅ Middleware
 app.use(cors({
   origin: 'https://wagerxplay.onrender.com',
-
   credentials: true
 }));
 
@@ -51,6 +50,22 @@ app.use("/api", oddsRoutes);
 app.use('/api/bets', betRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/withdrawals', withdrawRoutes);
+
+// ✅ Serve frontend build (Vite + React) for non-API routes
+const path = require('path');
+const fs = require('fs');
+
+const frontendDistPath = path.join(__dirname, '..', 'FRONTEND', 'my-cricket-betting-app', 'dist');
+app.use(express.static(frontendDistPath));
+
+app.get('*', (req, res) => {
+  const indexPath = path.join(frontendDistPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('Frontend build not found');
+  }
+});
 
 // Server
 const PORT = 5000;
