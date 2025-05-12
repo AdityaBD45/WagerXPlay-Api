@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path'); // To serve static files like index.html
 const app = express();
 
 const authRoutes = require('./routes/authRoutes');
@@ -33,6 +32,7 @@ mongoose.connect(process.env.MONGO_URI || 'your-fallback-URI', {
 // ✅ Middleware
 app.use(cors({
   origin: 'https://wagerxplay.onrender.com',
+
   credentials: true
 }));
 
@@ -51,14 +51,6 @@ app.use("/api", oddsRoutes);
 app.use('/api/bets', betRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/withdrawals', withdrawRoutes);
-
-// Serve the static files from the React app build folder
-app.use(express.static(path.join(__dirname, 'client/build')));
-
-// Catch-all route for non-API routes, serving index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
 
 // Server
 const PORT = 5000;
