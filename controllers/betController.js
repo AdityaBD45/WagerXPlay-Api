@@ -125,10 +125,6 @@ const declareWinner = async (req, res) => {
 
 
 module.exports = {
-  declareWinner,
-};
-
-module.exports = {
   placeBet,
   getUserBets,
   declareWinner
