@@ -77,10 +77,6 @@ const getUserBets = async (req, res) => {
 
 
 
-
-
-
-
 const declareWinner = async (req, res) => {
   const { matchId, winnerTeam } = req.body;
 
@@ -89,25 +85,30 @@ const declareWinner = async (req, res) => {
   }
 
   try {
-    // Step 1: Update match status to completed
-    await Odds.findOneAndUpdate({ matchId }, { matchStatus: 'completed' });
+    // Step 1: Update the match status to completed
+    const matchOdds = await Odds.findOneAndUpdate(
+      { matchId },
+      { matchStatus: 'completed' }
+    );
+
+    if (!matchOdds) {
+      return res.status(404).json({ error: 'Match not found in odds collection' });
+    }
 
     // Step 2: Fetch all bets for that match
     const bets = await Bet.find({ matchId });
 
-    // Step 3: Prepare update operations
+    // Step 3: Update each bet's status + user balance
     const updateOps = bets.map(async (bet) => {
       const isWon = bet.betOutcome === winnerTeam;
       const newStatus = isWon ? 'won' : 'lost';
 
-      // If user won, update balance
       if (isWon) {
         await User.findByIdAndUpdate(bet.user, {
           $inc: { balance: bet.potentialWinnings }
         });
       }
 
-      // Update bet status
       return Bet.updateOne(
         { _id: bet._id },
         { betStatus: newStatus, matchStatus: 'completed' }
@@ -122,6 +123,7 @@ const declareWinner = async (req, res) => {
     res.status(500).json({ error: 'Server error while declaring winner' });
   }
 };
+
 
 
 module.exports = {
