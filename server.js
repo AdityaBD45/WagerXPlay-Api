@@ -41,11 +41,6 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 // Routes
 app.use('/api/auth', authRoutes);
-
-app.post('/api/admin/createMatch', verifyToken, verifyAdmin, (req, res) => {
-  res.status(201).json({ message: 'Match created successfully' });
-});
-
 app.use("/api", oddsRoutes);
 app.use('/api/bets', betRoutes);
 app.use('/api/deposits', depositRoutes);
