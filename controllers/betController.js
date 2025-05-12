@@ -89,21 +89,28 @@ const declareWinner = async (req, res) => {
   }
 
   try {
-    // Step 1: Update the match status to completed
-    await Odds.findOneAndUpdate(
-      { matchId },
-      { matchStatus: 'completed' }
-    );
+    // Step 1: Update match status to completed
+    await Odds.findOneAndUpdate({ matchId }, { matchStatus: 'completed' });
 
     // Step 2: Fetch all bets for that match
     const bets = await Bet.find({ matchId });
 
-    // Step 3: Update each bet's status based on selected team
-    const updateOps = bets.map(bet => {
-      const status = bet.betOutcome === winnerTeam ? 'won' : 'lost';
+    // Step 3: Prepare update operations
+    const updateOps = bets.map(async (bet) => {
+      const isWon = bet.betOutcome === winnerTeam;
+      const newStatus = isWon ? 'won' : 'lost';
+
+      // If user won, update balance
+      if (isWon) {
+        await User.findByIdAndUpdate(bet.user, {
+          $inc: { balance: bet.potentialWinnings }
+        });
+      }
+
+      // Update bet status
       return Bet.updateOne(
         { _id: bet._id },
-        { betStatus: status, matchStatus: 'completed' }
+        { betStatus: newStatus, matchStatus: 'completed' }
       );
     });
 
@@ -115,6 +122,7 @@ const declareWinner = async (req, res) => {
     res.status(500).json({ error: 'Server error while declaring winner' });
   }
 };
+
 
 module.exports = {
   declareWinner,
