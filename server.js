@@ -55,7 +55,7 @@ app.use('/api/withdrawals', withdrawRoutes);
 const path = require('path');
 const fs = require('fs');
 
-const frontendDistPath = path.join(__dirname, '..', 'FRONTEND', 'my-cricket-betting-app', 'dist');
+const frontendDistPath = path.join(__dirname, '..', 'FRONTEND', 'my-cricket-betting-app');
 app.use(express.static(frontendDistPath));
 
 app.get('*', (req, res) => {
