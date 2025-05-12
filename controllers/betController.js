@@ -104,11 +104,16 @@ const declareWinner = async (req, res) => {
       const newStatus = isWon ? 'won' : 'lost';
 
       if (isWon) {
+        // Calculate the potential winnings: betOdds * betAmount
+        const potentialWinnings = bet.betOdds * bet.betAmount;
+
+        // Update the user's balance if they won
         await User.findByIdAndUpdate(bet.user, {
-          $inc: { balance: bet.potentialWinnings }
+          $inc: { balance: potentialWinnings }
         });
       }
 
+      // Update the bet status and match status in the Bet collection
       return Bet.updateOne(
         { _id: bet._id },
         { betStatus: newStatus, matchStatus: 'completed' }
@@ -123,6 +128,7 @@ const declareWinner = async (req, res) => {
     res.status(500).json({ error: 'Server error while declaring winner' });
   }
 };
+
 
 
 
