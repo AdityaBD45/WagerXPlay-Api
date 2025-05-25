@@ -7,6 +7,7 @@ This is the backend API for **WagerXPlay**, a **cricket sport betting simulation
 
 check here a how this website looks :
 🔗 **Live Site:** [https://wagerxplay.onrender.com](https://wagerxplay.onrender.com)
+The site may take 25–30 seconds to load as it fetches data from free odds API; speed will improve with upgraded version ( I kindly ask for your patience during this short wait. )
 ---
 
 ## 🔧 Core Features
