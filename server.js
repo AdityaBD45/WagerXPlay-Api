@@ -32,8 +32,6 @@ mongoose.connect(process.env.MONGO_URI || 'your-fallback-URI', {
 // ✅ Middleware
 app.use(cors({
   origin: 'https://wagerxplay.onrender.com',
-
-  credentials: true
 }));
 
 // ✅ Increase payload size limit
